@@ -2,8 +2,9 @@ from ursina import *
 from ursina.prefabs.grid_editor import GridEditor, PixelEditor
 import re
 
+
 class Tilemap(GridEditor):
-    def __init__(self, tilemap='', tileset='', tileset_size=(8,8), **kwargs):
+    def __init__(self, tilemap='', tileset='', tileset_size=(8, 8), **kwargs):
         if isinstance(tilemap, str):
             self.tilemap = load_texture(tilemap)
 
@@ -24,52 +25,52 @@ class Tilemap(GridEditor):
 
         # self.grid = [[self.tilemap.get_pixel(x,y) for y in range(self.h)] for x in range(self.w)]
         self.auto_render = False
-        self.outline = Entity(parent=self, model=Quad(segments=0, mode='line', thickness=1), color=color.cyan, z=.01, origin=(-.5,-.5), enabled=self.edit_mode)
+        self.outline = Entity(parent=self, model=Quad(segments=0, mode='line', thickness=1), color=color.cyan, z=.01, origin=(-.5, -.5), enabled=self.edit_mode)
 
         self._quad = Quad(segments=0)
         self._quad.vertices = [Vec3(*v)+Vec3(.5,.5,0) for v in self._quad.vertices]
         self._garbage = Entity(parent=self, add_to_scene_entities=False)
 
         self.uv_dict = {
-            '11111111' : [(4,1), (5,1), (6,1), (7,1)],     # fill
+            '11111111': [(4, 1), (5, 1), (6, 1), (7, 1)],  # fill
 
-            '0.11111.' : [(1,3), (2,3), (5,3), (6,3)],     # top
-            '1.0.1111' : [(3,2), (3,1)],     # right
-            '111.0.11' : [(2,0), (1,0), (6,2), (5,2)],     # bot
-            '11111.0.' : [(0,1), (0,2)],     # left
+            '0.11111.': [(1, 3), (2, 3), (5, 3), (6, 3)],  # top
+            '1.0.1111': [(3, 2), (3, 1)],  # right
+            '111.0.11': [(2, 0), (1, 0), (6, 2), (5, 2)],  # bot
+            '11111.0.': [(0, 1), (0, 2)],  # left
 
-            '000.111.' : [(3,3), ],     # corner_top_right
-            '1.000.11' : [(3,0), ],     # corner_bot_right
-            '111.000.' : [(0,0), ],     # corner_bot_left
-            '0.111.00' : [(0,3), ],     # corner_top_left
+            '000.111.': [(3, 3), ],  # corner_top_right
+            '1.000.11': [(3, 0), ],  # corner_bot_right
+            '111.000.': [(0, 0), ],  # corner_bot_left
+            '0.111.00': [(0, 3), ],  # corner_top_left
 
-            '10111111' : [(1,1), ],     #inner_corner_bot_left
-            '11101111' : [(1,2), ],     #inner_corner_top_left
-            '11111011' : [(2,2), ],     #inner_corner_top_right
-            '11111110' : [(2,1), ],     #inner_corner_bot_right
+            '10111111': [(1, 1), ],  # inner_corner_bot_left
+            '11101111': [(1, 2), ],  # inner_corner_top_left
+            '11111011': [(2, 2), ],  # inner_corner_top_right
+            '11111110': [(2, 1), ],  # inner_corner_bot_right
 
         }
-        self.single_block_coordinates = [(4,0), (5,0), (6,0), (7,0)]
-        self.variation_chance = [0,0,0,0,1,1,1,2,2,3]
+        self.single_block_coordinates = [(4, 0), (5, 0), (6, 0), (7, 0)]
+        self.variation_chance = [0, 0, 0, 0, 1, 1, 1, 2, 2, 3]
 
         if 'min' in self.texture.name:
             self.uv_dict = {
-                '11111111' : [(1,1)],     # fill
+                '11111111': [(1, 1)],  # fill
 
-                '0.11111.' : [(1,2)],     # top
-                '111.0.11' : [(1,0), ],     # bot
-                '1.0.1111' : [(0,1), '-1,1'],     # right
-                '11111.0.' : [(0,1)],     # left
+                '0.11111.': [(1, 2)],  # top
+                '111.0.11': [(1, 0), ],  # bot
+                '1.0.1111': [(0, 1), '-1,1'],  # right
+                '11111.0.': [(0, 1)],  # left
 
-                '0.111.00' : [(0,2), ],     # corner_top_left
-                '000.111.' : [(0,2), '-1,1'],     # corner_top_right
-                '1.000.11' : [(0,2), '-1,-1'],     # corner_bot_right
-                '111.000.' : [(0,2), '1,-1'],     # corner_bot_left
+                '0.111.00': [(0, 2), ],  # corner_top_left
+                '000.111.': [(0, 2), '-1,1'],  # corner_top_right
+                '1.000.11': [(0, 2), '-1,-1'],  # corner_bot_right
+                '111.000.': [(0, 2), '1,-1'],  # corner_bot_left
 
-                '11111110' : [(2,0), ],     #inner_corner_bot_right
-                '10111111' : [(2,0), '-1,1'],     #inner_corner_bot_left
-                '11111011' : [(2,1), ],     #inner_corner_top_right
-                '11101111' : [(2,1), '-1,1'],     #inner_corner_top_left
+                '11111110': [(2, 0), ],  # inner_corner_bot_right
+                '10111111': [(2, 0), '-1,1'],  # inner_corner_bot_left
+                '11111011': [(2, 1), ],  # inner_corner_top_right
+                '11101111': [(2, 1), '-1,1'],  # inner_corner_top_left
             }
             self.single_block_coordinates = [(2,2)]
             self.variation_chance = [0,]
@@ -78,7 +79,6 @@ class Tilemap(GridEditor):
 
         self.render()
 
-
     def update(self):
         if not self.edit_mode:
             return
@@ -86,7 +86,6 @@ class Tilemap(GridEditor):
         super().update()
         if mouse.left:
             self.draw_temp(self.cursor.position)
-
 
     def draw_temp(self, position):
         e = Entity(
@@ -99,22 +98,18 @@ class Tilemap(GridEditor):
 
             texture_scale=Vec2(1/self.tileset_size[0], 1/self.tileset_size[1]),
             texture_offset=Vec2(.33, .33),
-            origin=(-.5,-.5),
+            origin=(-.5, -.5),
             ignore=True,
             )
         if self.selected_char == self.palette[0]:
             e.color = window.color
             e.texture = None
 
-
-
-
     def input(self, key):
         super().input(key)
         if key == 'left mouse up':
             for e in self._garbage.children:
                 destroy(e)
-
 
     def render(self):
         self.scale = self.tilemap.size
@@ -142,7 +137,7 @@ class Tilemap(GridEditor):
 
                     neighbours = list()
                     # register neighbours clockwise starting from the top
-                    for offset in [(0,1), (1,1), (1,0), (1,-1), (0,-1), (-1,-1), (-1,0), (-1,1)]:
+                    for offset in [(0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1), (-1, 0), (-1, 1)]:
                         try:
                             neighbours.append(self.grid[x+offset[0]][y+offset[1]] != color.white)
                         except IndexError:
@@ -199,13 +194,10 @@ class Tilemap(GridEditor):
                         a, b, c, d = uv
                         uv = [c, d, a, b]
 
-
                     self.model.uvs.extend(uv)
                     i += 4
 
-
         self.model.generate() # call to create the mesh
-
 
     def save(self):
         for y in range(self.tilemap.height):
@@ -215,7 +207,6 @@ class Tilemap(GridEditor):
         if self.tilemap.path:
             self.tilemap.save(self.tilemap.path)
             print('saving:', self.tilemap.path)
-
 
 
 if __name__ == '__main__':

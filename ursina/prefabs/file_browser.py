@@ -17,7 +17,6 @@ class FileButton(Button):
 
         self.text_entity.scale *= .75
 
-
     def on_click(self):
         if len(self.load_menu.selection) >= self.load_menu.selection_limit and not self.selected:
             for e in self.parent.children:
@@ -29,14 +28,12 @@ class FileButton(Button):
         else:
             self.load_menu.address_bar.text_entity.text = '<light_gray>' + str(self.load_menu.path.resolve())
 
-
     def on_double_click(self):
         if self.path.is_dir():
             self.load_menu.path = self.path
         else:
             self.selected = True
             self.load_menu.open()
-
 
     @property
     def selected(self):
@@ -52,7 +49,6 @@ class FileButton(Button):
             self.color = Button.color
 
         self.load_menu.open_button.color = color.azure if self.load_menu.selection else color.dark_gray
-
 
 
 class FileBrowser(Entity):
@@ -94,7 +90,6 @@ class FileBrowser(Entity):
             self.path = self.start_path     # this will populate the list
             self.scroll = 0
 
-
     def input(self, key):
         if key == 'scroll down':
             if self.scroll + self.max_buttons < len(self.button_parent.children)-1:
@@ -103,7 +98,6 @@ class FileBrowser(Entity):
         if key == 'scroll up':
             if self.scroll > 0:
                 self.scroll -= 1
-
 
     @property
     def scroll(self):
@@ -123,7 +117,6 @@ class FileBrowser(Entity):
         self.can_scroll_up_indicator.enabled = value > 0
         self.can_scroll_down_indicator.enabled = value + self.max_buttons + 1 != len(self.button_parent.children)
 
-
     @property
     def path(self):
         return self._path
@@ -133,13 +126,11 @@ class FileBrowser(Entity):
         self._path = value
         self.address_bar.text_entity.text = '<light_gray>' + str(value.resolve())
 
-
         files = [e for e in value.iterdir() if e.is_dir() or e.suffix in self.file_types or '.*' in self.file_types]
         files.sort(key=lambda x : x.is_file())  # directories first
 
         for i in range(len(self.button_parent.children) - len(files)):
             destroy(self.button_parent.children.pop())
-
 
         for i, f in enumerate(files):
             prefix = ' <light_gray>'
@@ -166,7 +157,6 @@ class FileBrowser(Entity):
 
         self.scroll = 0
 
-
     def on_enable(self):
         if not hasattr(self, 'path'):
             self.path = self.start_path
@@ -178,14 +168,11 @@ class FileBrowser(Entity):
         self.button_parent.y = 0
         invoke(setattr, self, 'scroll', 0, delay=.1)
 
-
     def close(self):
         self.enabled = False
 
-
     def folder_up(self):
         self.path = self.path.parent
-
 
     def open(self, path=None):
         if not self.selection:
@@ -200,19 +187,15 @@ class FileBrowser(Entity):
 
         self.close()
 
-
     @property
     def selection(self):
         return [c.path for c in self.button_parent.children if c.selected == True]
 
 
-
-
-
 if __name__ == '__main__':
     app = Ursina()
 
-    fb = FileBrowser(file_types=('.*'), enabled=True)
+    fb = FileBrowser(file_types='.*', enabled=True)
 
     def on_submit(paths):
         print('--------', paths)

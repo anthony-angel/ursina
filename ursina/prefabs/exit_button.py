@@ -1,5 +1,6 @@
 from ursina import *
 
+
 class ExitButton(Button):
     def __init__(self, **kwargs):
         super().__init__(
@@ -14,10 +15,8 @@ class ExitButton(Button):
             text = 'x',
             **kwargs)
 
-
     def on_click(self):
         application.quit()
-
 
     def input(self, key):
         if held_keys['shift'] and key == 'q' and not mouse.right:

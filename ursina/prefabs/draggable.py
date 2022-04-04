@@ -64,7 +64,6 @@ class Draggable(Button):
         if hasattr(self, 'drag'):
             self.drag()
 
-
     def stop_dragging(self):
         self.dragging = False
         self.delta_drag = self.world_position - self.start_pos
@@ -118,7 +117,6 @@ class Draggable(Button):
             value = (value, value, value)
 
         self._step = value
-
 
 
 if __name__ == '__main__':

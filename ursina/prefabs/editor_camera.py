@@ -1,5 +1,6 @@
 from ursina import *
 
+
 class EditorCamera(Entity):
 
     def __init__(self, **kwargs):
@@ -25,8 +26,7 @@ class EditorCamera(Entity):
         self.perspective_fov = camera.fov
         self.orthographic_fov = camera.fov
         self.on_destroy = self.on_disable
-        self.hotkeys = {'toggle_orthographic':'shift+p', 'focus':'f', 'reset_center':'shift+f'}
-
+        self.hotkeys = {'toggle_orthographic': 'shift+p', 'focus': 'f', 'reset_center': 'shift+f'}
 
     def on_enable(self):
         camera.org_parent = camera.parent
@@ -37,17 +37,14 @@ class EditorCamera(Entity):
         camera.rotation = (0,0,0)
         self.target_z = camera.z
 
-
     def on_disable(self):
         camera.editor_position = camera.position
         camera.parent = camera.org_parent
         camera.position = camera.org_position
         camera.rotation = camera.org_rotation
 
-
     def on_destroy(self):
         destroy(self.smoothing_helper)
-
 
     def input(self, key):
         combined_key = ''.join(e+'+' for e in ('control', 'shift', 'alt') if held_keys[e] and not e == key) + key
@@ -62,13 +59,11 @@ class EditorCamera(Entity):
 
             camera.orthographic = not camera.orthographic
 
-
         elif combined_key == self.hotkeys['reset_center']:
             self.animate_position(self.start_position, duration=.1, curve=curve.linear)
 
         elif combined_key == self.hotkeys['focus'] and mouse.world_point:
             self.animate_position(mouse.world_point, duration=.1, curve=curve.linear)
-
 
         elif key == 'scroll up':
             if not camera.orthographic:
@@ -93,8 +88,6 @@ class EditorCamera(Entity):
                 org_pos = camera.world_position
                 self.world_position = mouse.world_point
                 camera.world_position = org_pos
-
-
 
     def update(self):
         if mouse.right:
@@ -133,12 +126,10 @@ class EditorCamera(Entity):
             self.quat = slerp(self.quat, self.smoothing_helper.quat, time.dt*self.rotation_smoothing)
             camera.world_rotation_z = 0
 
-
     def __setattr__(self, name, value):
         super().__setattr__(name, value)
         if hasattr(self, 'smoothing_helper') and name in ('rotation', 'rotation_x', 'rotation_y', 'rotation_z'):
             setattr(self.smoothing_helper, name, value)
-
 
 
 if __name__ == '__main__':

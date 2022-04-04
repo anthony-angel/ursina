@@ -38,8 +38,6 @@ class FileBrowserSave(FileBrowser):
         for key, value in kwargs.items():
             setattr(self, key ,value)
 
-
-
     def save(self):
         file_name = self.file_name_field.text_field.text
         if not file_name.endswith(self.file_type):
@@ -63,15 +61,12 @@ class FileBrowserSave(FileBrowser):
             self.close()
 
 
-
-
 if __name__ == '__main__':
     from ursina import *
     from ursina.prefabs.file_browser_save import FileBrowserSave
 
     app = Ursina()
     wp = FileBrowserSave(file_type = '.oto')
-
 
     import json
     save_data = {'level': 4, 'name':'Link'}

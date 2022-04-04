@@ -1,7 +1,6 @@
 from ursina import *
 
 
-
 # def play_synth_adsr(
 #     wave = 'sine',
 #     max_volume = .75,
@@ -35,7 +34,6 @@ from ursina import *
 #     a.animate('pitch', pow(1 / 1.05946309436, -end_pitch), duration=total_duration, curve=pitch_curve)
 #     a.animations.append(invoke(a.stop, delay=total_duration))
 #     return a
-
 
 def ursfx(volume_curve, volume=.75, wave='sine', pitch=0, pitch_change=0, speed=1, pitch_curve=curve.linear):  # play a retro style sound effect
     a = Audio(wave, loop=True, pitch=pow(1 / 1.05946309436, -pitch), volume=volume_curve[0][1] * volume)
@@ -92,7 +90,7 @@ class SynthGUI(Entity):
         self.code_text = Text('', parent=self.wave_panel, scale=2, position=(self.paste_button.x+self.paste_button.scale_x+.025,1.11))
 
         self.wave_selector.on_value_changed = self.play
-        self.background_panel = Entity(model=Quad(radius=.025), parent=self.wave_panel, color=color.black66, z=1, origin=(-.5,-.5), scale=(1.125,1.75+.025), position=(-.1,-.6))
+        self.background_panel = Entity(model=Quad(radius=.025), parent=self.wave_panel, color=color.black66, z=1, origin=(-.5, -.5), scale=(1.125,1.75+.025), position=(-.1,-.6))
 
         for i, knob in enumerate(self.knobs):
             def drag(this_knob=knob):
@@ -121,7 +119,6 @@ class SynthGUI(Entity):
 
         self.draw()
 
-
     def update(self):
         for e in self.knobs:
             e.world_scale = .25
@@ -130,17 +127,14 @@ class SynthGUI(Entity):
 
         self.draw()
 
-
     def input(self, key):
         if held_keys['control'] and key == 'v' and self.wave_panel.enabled:
             self.paste_code()
-
 
     def copy_code(self):
         print(self.recipe)
         import pyperclip
         pyperclip.copy(self.recipe)
-
 
     def paste_code(self, code=""):
         import pyperclip
@@ -152,7 +146,7 @@ class SynthGUI(Entity):
             curve = code.split('ursfx(')[1].split(']')[0] + ']'
             curve = eval(curve)
             for i, e in enumerate(curve):
-                self.knobs[i].position=(e)
+                self.knobs[i].position = e
             print('--------curve', curve)
 
             volume = .75
@@ -180,7 +174,6 @@ class SynthGUI(Entity):
             self.pitch_slider.value = pitch
             print('--------pitch', pitch)
 
-
             pitch_change = 0
             if 'pitch_change=' in code:
                 pitch_change = code.split('pitch_change=')[1]
@@ -202,14 +195,11 @@ class SynthGUI(Entity):
                 speed = eval(speed)
             self.speed_slider.value = speed
             print('--------speed')
-
-
             print(curve, volume, wave, pitch, pitch_change, speed)
             self.draw()
 
         except:
             print('invalid ursfx code:', code)
-
 
     @property
     def recipe(self):
@@ -227,11 +217,6 @@ class SynthGUI(Entity):
 
         return f"ursfx({str(self.volume_curve)}, volume={round(self.volume_slider.value,3)}, wave='{self.wave_selector.value}'{pitch_code}{pitch_change_code}{speed_code})"
 
-
-
-
-
-
     def draw(self):
         # self.bg.scale_x = self.knobs[4].x
         self.waveform_bg.scale_x = self.knobs[4].x
@@ -239,7 +224,6 @@ class SynthGUI(Entity):
 
         for e in self.knobs:
             e.position = (round(e.x,2), round(e.y,2))
-
 
         self.line.model.vertices = [e.get_position(relative_to=self.waveform) for e in self.knobs]
         self.line.model.generate()
@@ -249,7 +233,6 @@ class SynthGUI(Entity):
 
         self.waveform.scale_y = self.volume_slider.value
         # self.code_text.text = f"ursfx({str(self.volume_curve)}, {round(self.volume_slider.value,3)}, wave='{self.wave_selector.value}', pitch={self.pitch_slider.value}, end_pitch={self.pitch_slider.value+self.pitch_change_slider.value})"
-
 
     def play(self):
         self.draw()
@@ -270,14 +253,17 @@ class SynthGUI(Entity):
 
         self.code_text.text = self.recipe
 
+
 if __name__ == '__main__':
     app = Ursina()
 
 gui = SynthGUI(enabled=False)
 
+
 def toggle_gui_input(key):
     if key == 'f3':
         gui.enabled = not gui.enabled
+
 
 Entity(input=toggle_gui_input)
 

@@ -2,7 +2,7 @@ from ursina import *
 
 
 class RadialMenu(Entity):
-    def __init__(self, buttons=list(), **kwargs):
+    def __init__(self, buttons=(), **kwargs):
         super().__init__()
         self.parent = camera.ui
         self.buttons = buttons
@@ -16,8 +16,9 @@ class RadialMenu(Entity):
             z=99,
             scale=999,
             collider='box',
-            color=color.color(0,0,0,.1),
-            enabled=False)
+            color=color.color(0, 0, 0, .1),
+            enabled=False
+        )
         self.z = -99
 
         offset = lerp(.5, 2, len(self.buttons)/8)
@@ -36,8 +37,6 @@ class RadialMenu(Entity):
         for key, value in kwargs.items():
             setattr(self, key, value)
 
-
-
     def on_enable(self):
         if not hasattr(self, 'bg'):
             return
@@ -55,7 +54,6 @@ class RadialMenu(Entity):
             c.scale = 0
             c.animate_scale(original_scales[i], duration=.2, delay=i*delay_step, curve=curve.out_bounce)
 
-
     def input(self, key):
         if key == 'left mouse down' and mouse.hovered_entity in [c for c in self.children if isinstance(c, Button)]:
             invoke(setattr, self, 'enabled', False, delay=.1)
@@ -72,29 +70,36 @@ class RadialMenuButton(Button):
             pressed_color=color.azure
             )
 
-
         for key, value in kwargs.items():
             setattr(self, key, value)
-
 
 
 if __name__ == '__main__':
     app = Ursina()
 
     rm = RadialMenu(
-        buttons = (
+        buttons=(
             RadialMenuButton(text='1'),
             RadialMenuButton(text='2'),
             RadialMenuButton(text='3'),
             RadialMenuButton(text='4'),
             RadialMenuButton(text='5', scale=.5),
             RadialMenuButton(text='6', color=color.red),
-            ),
-        enabled = False
+        ),
+        enabled=False
         )
-    RadialMenuButton(text='6', color=color.red,x =-.5, scale=.06),
+    RadialMenuButton(text='6', color=color.red, x=-.5, scale=.06),
+
     def enable_radial_menu():
         rm.enabled = True
-    cube = Button(parent=scene, model='cube', color=color.orange, highlight_color=color.azure, on_click=enable_radial_menu)
+
+    cube = Button(
+        parent=scene,
+        model='cube',
+        color=color.orange,
+        highlight_color=color.azure,
+        on_click=enable_radial_menu
+    )
+
     EditorCamera()
     app.run()

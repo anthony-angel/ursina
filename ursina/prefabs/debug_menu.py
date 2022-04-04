@@ -11,7 +11,6 @@ class DebugMenu(Draggable):
         for key, value in kwargs.items():
             setattr(self, key, value)
 
-
     def draw_functions(self):
         for c in self.children:
             destroy(c)

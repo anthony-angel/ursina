@@ -5,7 +5,6 @@ import sys
 from math import floor
 
 
-
 class GridEditor(Entity):
     def __init__(self, size=(32,32), palette=(' ', '#', '|', 'o'), **kwargs):
         super().__init__(parent=camera.ui, model='quad', position=(-.45,-.45), origin=(-.5,-.5), scale=.9, collider='box')
@@ -72,7 +71,6 @@ class GridEditor(Entity):
 
         grid_layout(self.palette_parent.children, max_x=4)
 
-
     @property
     def edit_mode(self):
         return self._edit_mode
@@ -84,7 +82,6 @@ class GridEditor(Entity):
         self.outline.enabled = value
         self.palette_parent.enabled = value
         self.help_text.enabled = value
-
 
     def update(self):
         if not self.edit_mode:
@@ -121,8 +118,6 @@ class GridEditor(Entity):
                 else:
                     self.selected_char = self.grid[x][y]
 
-
-
     def draw(self, x, y):
         for _y in range(y, min(y+self.brush_size, self.h)):
             for _x in range(x, min(x+self.brush_size, self.w)):
@@ -131,11 +126,9 @@ class GridEditor(Entity):
         if self.auto_render:
             self.render()
 
-
     def input(self, key):
         if key == 'tab':
             self.edit_mode = not self.edit_mode
-
 
         # if not self.edit_mode:
         #     return
@@ -153,7 +146,6 @@ class GridEditor(Entity):
 
             if not held_keys['control']:
                 self.record_undo()
-
 
         if held_keys['control'] and key == 'z':
             self.undo_index -= 1
@@ -189,13 +181,10 @@ class GridEditor(Entity):
             if hasattr(self, 'save'):
                 self.save()
 
-
     def record_undo(self):
         self.undo_index += 1
         self.undo_cache = self.undo_cache[:self.undo_index]
         self.undo_cache.append(deepcopy(self.grid))
-
-
 
     def floodfill(self, matrix, x, y, first=True):
         if matrix[x][y] == self.selected_char:
@@ -217,15 +206,12 @@ class GridEditor(Entity):
                 self.floodfill(matrix, x, y+1, first=False)
 
 
-
-
 class PixelEditor(GridEditor):
     def __init__(self, texture, palette=(color.black, color.white, color.light_gray, color.gray, color.red, color.orange, color.yellow, color.lime, color.green, color.turquoise, color.cyan, color.azure, color.blue, color.violet, color.magenta, color.pink), **kwargs):
         self.grid = [[texture.get_pixel(x,y) for y in range(texture.height)] for x in range(texture.width)]
         super().__init__(texture=texture, size=texture.size, palette=palette, **kwargs)
         self.texture.filtering = False
         self.render()
-
 
     def render(self):
         for y in range(self.h):
@@ -234,12 +220,10 @@ class PixelEditor(GridEditor):
 
         self.texture.apply()
 
-
     def save(self):
         if self.texture.path:
             self.texture.save(self.texture.path)
             print('saving:', self.texture.path)
-
 
 
 class ASCIIEditor(GridEditor):
@@ -259,7 +243,6 @@ class ASCIIEditor(GridEditor):
         rotated_grid = list(zip(*self.grid[::-1]))
         self.text_entity.text = '\n'.join([''.join(reversed(line)) for line in reversed(rotated_grid)])
 
-
     def input(self, key):
         super().input(key)
         if held_keys['control'] and key == 'c':
@@ -271,8 +254,6 @@ class ASCIIEditor(GridEditor):
         #     undo_index += 1
         #     undo_cache = undo_cache[:undo_index]
         #     undo_cache.append(deepcopy(grid))
-
-
 
 
 if __name__ == '__main__':
@@ -294,6 +275,5 @@ if __name__ == '__main__':
     '''
     from ursina.prefabs.grid_editor import ASCIIEditor
     ASCIIEditor()
-
 
     app.run()

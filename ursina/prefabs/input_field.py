@@ -61,7 +61,6 @@ class InputField(Button):
             self.label = Text(str(label) + ':', parent = self, position = self.text_field.position, scale = 1.25)
             self.text_field.x += 0.1 * (len(str(label)) + 1.0) / 6.0
 
-
         for key, value in kwargs.items():
             setattr(self, key, value)
 

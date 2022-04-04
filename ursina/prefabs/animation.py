@@ -27,7 +27,6 @@ class Animation(Sprite):
             texture_folders = (application.compressed_textures_folder, application.asset_folder, application.internal_textures_folder)
             self.frames = [Texture(e) for e in find_sequence(name, ('png', 'jpg'), texture_folders)]
 
-
         if self.frames:
             super().__init__(texture=self.frames[0])
 
@@ -44,14 +43,11 @@ class Animation(Sprite):
         self.is_playing = False
         self.autoplay = autoplay
 
-
         for key, value in kwargs.items():
             setattr(self, key ,value)
 
-
         if self.autoplay:
             self.start()
-
 
     def start(self):
         if self.is_playing:
@@ -69,11 +65,9 @@ class Animation(Sprite):
         self.sequence.finish()
         self.is_playing = False
 
-
     @property
     def duration(self):     # get the duration of the animation. you can't set it. to do so, change the fps instead.
         return self.sequence.duration
-
 
     def __setattr__(self, name, value):
         if hasattr(self, 'frames') and name in ('color', 'origin'):
@@ -87,9 +81,6 @@ class Animation(Sprite):
             super().__setattr__(name, value)
         except Exception as e:
             return e
-
-
-
 
 
 if __name__ == '__main__':

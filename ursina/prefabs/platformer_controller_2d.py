@@ -1,7 +1,6 @@
 from ursina import *
 
 
-
 class PlatformerController2d(Entity):
     def __init__(self, **kwargs):
         super().__init__()
@@ -49,18 +48,17 @@ class PlatformerController2d(Entity):
         invoke(setattr, self, 'gravity', target_gravity, delay=1/60)
         self._original_scale_x = self.scale_x
 
-
     def update(self):
         # check in the direction we're walking to see if there's a wall. If it does not hit, move.
-        if boxcast(
-            self.position+Vec3(self.velocity * time.dt * self.walk_speed,self.scale_y/2,0),
-            # self.position+Vec3(sefl,self.scale_y/2,0),
-            direction=Vec3(self.velocity,0,0),
-            distance=abs(self.scale_x/2),
-            ignore=(self, ),
-            traverse_target=self.traverse_target,
-            thickness=(self.scale_x*.9, self.scale_y*.9),
-            ).hit == False:
+        if not boxcast(
+                self.position + Vec3(self.velocity * time.dt * self.walk_speed, self.scale_y / 2, 0),
+                # self.position+Vec3(sefl,self.scale_y/2,0),
+                direction=Vec3(self.velocity, 0, 0),
+                distance=abs(self.scale_x / 2),
+                ignore=(self,),
+                traverse_target=self.traverse_target,
+                thickness=(self.scale_x * .9, self.scale_y * .9),
+        ).hit:
 
             self.x += self.velocity * time.dt * self.walk_speed
 
@@ -74,7 +72,6 @@ class PlatformerController2d(Entity):
                 self.animator.state = 'walk'
             else:
                 self.animator.state = 'idle'
-
 
         # check if we're on the ground or not.
         ray = boxcast(
@@ -100,15 +97,12 @@ class PlatformerController2d(Entity):
             self.y -= min(self.air_time * self.gravity, ray.distance-.1)
             self.air_time += time.dt*4 * self.gravity
 
-
         # if in jump and hit the ceiling, fall
         if self.jumping:
             if boxcast(self.position+(0,.1,0), self.up, distance=self.scale_y, thickness=.95, ignore=(self,), traverse_target=self.traverse_target).hit:
                 self.y_animator.kill()
                 self.air_time = 0
                 self.start_fall()
-
-
 
     def input(self, key):
         if key == 'space':
@@ -127,7 +121,6 @@ class PlatformerController2d(Entity):
 
         if held_keys['d'] or held_keys['a']:
             self.scale_x = self._original_scale_x * self.velocity
-
 
     def jump(self):
         if not self.grounded and self.jumps_left <= 1:
@@ -166,18 +159,15 @@ class PlatformerController2d(Entity):
         self.animate_y(target_y, duration, resolution=30, curve=curve.out_expo)
         self._start_fall_sequence = invoke(self.start_fall, delay=duration)
 
-
     def start_fall(self):
         self.y_animator.pause()
         self.jumping = False
-
 
     def land(self):
         # print('land')
         self.air_time = 0
         self.jumps_left = self.max_jumps
         self.grounded = True
-
 
 
 if __name__ == '__main__':

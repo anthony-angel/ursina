@@ -7,13 +7,13 @@ class Tooltip(Text):
         super().__init__(
             text=text,
             ignore=False,
-            parent = camera.ui,
-            wordwrap = 40,
-            origin = (-.5, -.5),
-            margin = (2, 2),
-            background_color = color.inverse(color.text_color),
-            enabled = False,
-            background = True
+            parent=camera.ui,
+            wordwrap=40,
+            origin=(-.5, -.5),
+            margin=(2, 2),
+            background_color=color.inverse(color.text_color),
+            enabled=False,
+            background=True
             )
         self.background.color = background_color
 
@@ -21,7 +21,6 @@ class Tooltip(Text):
             setattr(self, key, value)
 
         self.original_scale = self.scale
-
 
     def update(self):
         self.position = mouse.position
@@ -33,17 +32,18 @@ class Tooltip(Text):
         self.y = min(self.y, .5 - (self.height + self.size + .005))
         self.z = -9
 
+
 if __name__ == '__main__':
     app = Ursina()
 
     tooltip_test = Tooltip(
-    '<scale:1.5><pink>' + 'Rainstorm' + '<scale:1> \n \n' +
-'''Summon a <blue>rain
-storm <default>to deal 5 <blue>water
-damage <default>to <red>everyone, <default>including <orange>yourself. <default>
-Lasts for 4 rounds.'''.replace('\n', ' '),
+        '<scale:1.5><pink>' + 'Rainstorm' + '<scale:1> \n \n' +
+        '''Summon a <blue>rain
+        storm <default>to deal 5 <blue>water
+        damage <default>to <red>everyone, <default>including <orange>yourself. <default>
+        Lasts for 4 rounds.'''.replace('\n', ' '),
         background_color=color.red
-)
+    )
 
     tooltip_test.enabled = True
     app.run()

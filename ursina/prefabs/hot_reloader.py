@@ -9,12 +9,12 @@ import ast
 
 
 def is_valid_python(code):
-   try:
-       ast.parse(code)
-   except Exception as e:
-       return False, e
+    try:
+        ast.parse(code)
+    except Exception as e:
+        return False, e
 
-   return True
+    return True
 
 
 def make_code_reload_safe(code):
@@ -47,7 +47,6 @@ def make_code_reload_safe(code):
     return newtext
 
 
-
 class HotReloader(Entity):
     def __init__(self, path=__file__, **kwargs):
         super().__init__(parent=camera.ui, eternal=True, ignore_paused=True)
@@ -57,19 +56,18 @@ class HotReloader(Entity):
             setattr(self, key, value)
 
         self.path = Path(self.path)
-        self.hotreload = False   # toggle with f9
+        self.hotreload = False  # toggle with f9
         self._original_source_code_content = ''
         # self.text_editor = InGameTextEditor(path=self.path, enabled=False)
         self._i = 0
         self.hotkeys = {
-            'ctrl+r' : self.reload_code,
-            'f5'     : self.reload_code,
-            'f6'     : self.reload_textures,
-            'f7'     : self.reload_models,
-            'f8'     : self.reload_shaders,
-            'f9'     : self.toggle_hotreloading,
-            }
-
+            'ctrl+r': self.reload_code,
+            'f5': self.reload_code,
+            'f6': self.reload_textures,
+            'f7': self.reload_models,
+            'f8': self.reload_shaders,
+            'f9': self.toggle_hotreloading,
+        }
 
     def input(self, key):
         if key in self.hotkeys:
@@ -98,23 +96,18 @@ class HotReloader(Entity):
             text = file.read()
         return text
 
-
     def toggle_hotreloading(self):
         self.hotreload = not self.hotreload
         print_on_screen(f'<azure>hotreloading: {self.hotreload}')
-
-
 
     def reload_code(self, reset_camera=True):
         if not self.path.exists:
             print('trying to reload, but path does not exist:', self.path)
             return
 
-
         with open(self.path, encoding='utf8') as file:
             text = file.read()
             text = make_code_reload_safe(text)
-
 
         if not is_valid_python(text):
             print('invalid python code')
@@ -142,7 +135,6 @@ class HotReloader(Entity):
 
         print('reloaded in:', time.time() - t)
 
-
     def reload_textures(self):
         textured_entities = [e for e in scene.entities if e.texture]
         reloaded_textures = list()
@@ -159,7 +151,6 @@ class HotReloader(Entity):
             reloaded_textures.append(e.texture.name)
 
         return reloaded_textures
-
 
     def reload_models(self):
         entities = [e for e in scene.entities if e.model]
@@ -185,7 +176,6 @@ class HotReloader(Entity):
             # print(f'compressed {name}.blend sucessfully')
             changed_models.append(name)
 
-
         for e in entities:
             if e.model:
                 name = e.model.name.split('.')[0]
@@ -195,7 +185,6 @@ class HotReloader(Entity):
                     e.model = name
                     e.origin = e.origin
                     print('reloaded model:', name, e.model)
-
 
     def reload_shaders(self):
         import ursina
@@ -237,6 +226,7 @@ class HotReloader(Entity):
                 except Exception as e:
                     print('failed to reload shader:', shader.path.name, 'error:', e)
                     pass
+
 
 # class InGameTextEditor(Entity):
 #     def __init__(self, path, **kwargs):
@@ -337,6 +327,7 @@ class HotReloader(Entity):
 
 if __name__ == '__main__':
     from ursina import *
+
     app = Ursina()
     # hot_reloader = HotReloader()
     application.hot_reloader.path = application.asset_folder.parent.parent / 'samples' / 'platformer.py'
@@ -362,15 +353,15 @@ if __name__ == '__main__':
     b.texture.filtering = None
     GrayPlane(scale=10, y=-2, texture='shore', shader=shader)
 
-
     # Enable shadows; we need to set a frustum for that.
     from ursina.lights import DirectionalLight
-    sun = DirectionalLight(y=10, rotation=(90+30,90,0))
-    sun._light.show_frustum()
 
+    sun = DirectionalLight(y=10, rotation=(90 + 30, 90, 0))
+    sun._light.show_frustum()
 
     Sky(color=color.light_gray)
     EditorCamera()
+
 
     def update():
         a.x += (held_keys['d'] - held_keys['a']) * time.dt * 5

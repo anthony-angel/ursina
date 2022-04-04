@@ -9,12 +9,13 @@ logo.animate_color(color.white, duration=2, delay=1, curve=curve.out_quint_boome
 camera.overlay.animate_color(color.clear, duration=1, delay=4)
 destroy(logo, delay=5)
 
+
 def splash_input(key):
     destroy(logo)
     camera.overlay.animate_color(color.clear, duration=.25)
 
-logo.input = splash_input
 
+logo.input = splash_input
 
 
 if __name__ == '__main__':

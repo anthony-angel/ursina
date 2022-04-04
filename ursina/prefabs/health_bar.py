@@ -5,13 +5,13 @@ class HealthBar(Button):
 
     def __init__(self, max_value=100, show_text=True, show_lines=False, **kwargs):
         super().__init__(
-            position = (-.45 * window.aspect_ratio, .45),
-            origin = (-.5, .5),
-            scale = (Text.size*20, Text.size),
-            color = color.black66,
-            highlight_color = color.black66,
-            text = 'hp / max hp',
-            ignore = True,
+            position=(-.45 * window.aspect_ratio, .45),
+            origin=(-.5, .5),
+            scale=(Text.size*20, Text.size),
+            color=color.black66,
+            highlight_color=color.black66,
+            text='hp / max hp',
+            ignore=True,
             )
 
         self.bar = Entity(parent=self, model='quad', origin=self.origin, z=-.01, color=color.red.tint(-.2), ignore=True)
@@ -32,11 +32,9 @@ class HealthBar(Button):
         self.scale_y = self.scale_y # update background's rounded corners
         self.value = self.max_value
 
-
     @property
     def value(self):
         return self._value
-
 
     @value.setter
     def value(self, n):
@@ -61,8 +59,6 @@ class HealthBar(Button):
             self.bar.model = 'quad'
         self.bar.origin = self.bar.origin
 
-
-
     def __setattr__(self, name, value):
         if name == 'show_text':
             self.text_entity.enabled = value
@@ -74,7 +70,6 @@ class HealthBar(Button):
         if name == 'bar_color':
             self.bar.color = value
             return
-
 
         super().__setattr__(name, value)
 

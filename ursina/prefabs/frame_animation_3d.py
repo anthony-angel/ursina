@@ -25,14 +25,11 @@ class FrameAnimation3d(Entity):
         self.is_playing = False
         self.autoplay = autoplay
 
-
         for key, value in kwargs.items():
             setattr(self, key ,value)
 
-
         if self.autoplay:
             self.start()
-
 
     def start(self):
         if self.is_playing:
@@ -50,11 +47,9 @@ class FrameAnimation3d(Entity):
         self.sequence.finish()
         self.is_playing = False
 
-
     @property
     def duration(self):
         return self.sequence.duration
-
 
     def __setattr__(self, name, value):
         if hasattr(self, 'frames') and name in ('color', 'origin', 'texture'):

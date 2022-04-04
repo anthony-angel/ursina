@@ -26,7 +26,6 @@ class ButtonList(Entity):
         for key, value in kwargs.items():
             setattr(self, key, value)
 
-
     @property
     def button_dict(self):
         return self._button_dict
@@ -36,7 +35,6 @@ class ButtonList(Entity):
         self._button_dict = value
         self.actions = list(self.button_dict.values())
         self.text_entity.text = '\n'.join(self.button_dict.keys())
-
 
     def input(self, key):
         # handle click here instead of in on_click so you can assign a custom on_click function
@@ -57,7 +55,6 @@ class ButtonList(Entity):
         if key == 'left mouse down' and not self.hovered:
             self.selection_marker.enabled = False
 
-
     def update(self):
         self.highlight.enabled = mouse.hovered_entity == self
         if mouse.hovered_entity == self:
@@ -66,11 +63,8 @@ class ButtonList(Entity):
 
             self.highlight.y = ceil(mouse.point[1] / self.button_height) * self.button_height
 
-
     def on_disable(self):
         self.selection_marker.enabled = False
-
-
 
 
 if __name__ == '__main__':

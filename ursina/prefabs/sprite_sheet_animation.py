@@ -2,7 +2,7 @@ from ursina import Entity, Sequence, Func, Wait
 
 
 class SpriteSheetAnimation(Entity):
-    def __init__(self, texture, animations, tileset_size=[4,1], fps=12, model='quad', autoplay=True, **kwargs):
+    def __init__(self, texture, animations, tileset_size=[4, 1], fps=12, model='quad', autoplay=True, **kwargs):
         kwargs['model'] = model
         kwargs['texture'] = texture
         kwargs['tileset_size'] = tileset_size
@@ -23,7 +23,6 @@ class SpriteSheetAnimation(Entity):
                     ])
             self.animations[key] = s
 
-
     def play_animation(self, animation_name):
         if not self.animations:
             return
@@ -39,7 +38,7 @@ if __name__ == '__main__':
     '''
     from ursina import Ursina
     app = Ursina()
-    player_graphics = SpriteSheetAnimation('sprite_sheet', tileset_size=(4,4), fps=6, animations={
+    player_graphics = SpriteSheetAnimation('sprite_sheet', tileset_size=(4, 4), fps=6, animations={
         'idle' : ((0,0), (0,0)),
         'walk_up' : ((0,0), (3,0)),
         'walk_right' : ((0,1), (3,1)),
@@ -47,6 +46,7 @@ if __name__ == '__main__':
         'walk_down' : ((0,3), (3,3)),
         }
         )
+
     def input(key):
         if key == 'w':
             player_graphics.play_animation('walk_up')

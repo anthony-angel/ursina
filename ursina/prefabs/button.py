@@ -48,7 +48,6 @@ class Button(Entity):
 
         self.icon = None
 
-
     @property
     def text(self):
         if self.text_entity:
@@ -95,7 +94,6 @@ class Button(Entity):
     @text_color.setter
     def text_color(self, value):
         self.text_entity.color = value
-
 
     @property
     def icon(self):

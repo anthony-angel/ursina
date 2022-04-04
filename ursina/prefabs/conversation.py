@@ -11,6 +11,8 @@ class Node:
 
 
 bar_mission_solved = False
+
+
 class Conversation(Entity):
 
     def __init__(self, **kwargs):
@@ -28,6 +30,7 @@ class Conversation(Entity):
         self.question.text_entity.position = (-.45, -.05)
         self.question.highlight_color = self.question.color
         self.more_indicator = Entity(parent=self.question, model=Circle(3), position=(.45,-.4,-.1), rotation_z=180, color=color.azure, world_scale=.5, z=-1, enabled=False)
+
         def toggle():
             self.more_indicator.visible = not self.more_indicator.visible
             invoke(self.more_indicator.toggle, delay=.5)
@@ -53,8 +56,6 @@ class Conversation(Entity):
         self.question_appear_sequence = None
         self.button_appear_sequence = None
         self.started = False
-
-
 
     def ask(self, node, question_part=0):
         # print(node)
@@ -95,7 +96,6 @@ class Conversation(Entity):
             self.buttons[0].on_click = Func(setattr, self, 'enabled', False)
             self.button_appear_sequence.append(Func(setattr, self.buttons[0], 'enabled', True))
 
-
         for i, child in enumerate(answers):
             self.button_appear_sequence.append(Wait(i*.15))
             self.button_appear_sequence.append(Func(setattr, self.buttons[i], 'enabled', True))
@@ -109,19 +109,15 @@ class Conversation(Entity):
                     self.enabled = False
                     return
 
-
                 invoke(self.ask, node.children[0], 0, delay=.1)
                 if len(node.children) > 1:
-                    print('error at node:', n, '. node has multiple children, but should only have one (a question)')
+                    print('error at node:', node, '. node has multiple children, but should only have one (a question)')
 
             self.buttons[i].on_click = on_click
-
-
 
     def input(self, key):
         if key == 'left mouse down' or key == 'space' and not mouse.hovered_entity in self.buttons:
             self.next()
-
 
     def next(self):
         if not self.started:
@@ -136,13 +132,10 @@ class Conversation(Entity):
         if self.question_part < len(self.current_node.content)-1:
             self.ask(self.current_node, self.question_part+1)
 
-
     def start_conversation(self, conversation):
         self.conversation_nodes = self.parse_conversation(conversation)
         self.ask(self.conversation_nodes[0])
         self.started = True
-
-
 
     def parse_conversation(self, convo):
         convo = convo.strip()
@@ -188,9 +181,7 @@ class Conversation(Entity):
                     nodes[j].children.append(n)
                     break
 
-
         return nodes
-
 
 
 if __name__ == '__main__':

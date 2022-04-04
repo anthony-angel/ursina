@@ -50,7 +50,6 @@ class ButtonGroup(Entity):
         [self.select(b) for b in self.buttons if b.value in value]
 
 
-
     def layout(self):
         [destroy(c) for c in self.buttons]
         self.buttons = list()
@@ -67,14 +66,12 @@ class ButtonGroup(Entity):
 
         grid_layout(self.buttons, spacing=(0.025,0,0), origin=(-.5, .5, 0))
 
-
     def input(self, key):
         if key == 'left mouse down' and mouse.hovered_entity in self.buttons:
             self.select(mouse.hovered_entity)
 
-
     def select(self, b):
-        if b in self.selected and self.min_selection > 0 and len(self.selected) >= self.min_selection:
+        if b in self.selected and 0 < self.min_selection <= len(self.selected):
             return
 
         # add
@@ -93,11 +90,8 @@ class ButtonGroup(Entity):
 
         self.on_value_changed()
 
-
-
     def on_value_changed(self):
         pass
-
 
 
 if __name__ == '__main__':

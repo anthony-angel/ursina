@@ -43,12 +43,10 @@ class Slider(Entity):
             if self.on_value_changed:
                 self.on_value_changed()
 
-
         self.knob.drop = drop
         self._prev_value = self.default
         self.value = self.default
-        self.dynamic = dynamic    # if set to True, will call on_value_changed() while dragging. if set to False, will only call on_value_changed() after dragging.
-
+        self.dynamic = dynamic  # if set to True, will call on_value_changed() while dragging. if set to False, will only call on_value_changed() after dragging.
 
         self.knob.text_entity.text = str(round(self.default, 2))
 
@@ -57,13 +55,12 @@ class Slider(Entity):
 
         if self.vertical:
             self.rotation_z = -90
-            self.knob.lock = (1,0,0)
+            self.knob.lock = (1, 0, 0)
             self.knob.text_entity.rotation_z = 90
-            self.knob.text_entity.position = (.015,0)
+            self.knob.text_entity.position = (.015, 0)
         else:
-            self.knob.lock = (0,1,1)
+            self.knob.lock = (0, 1, 1)
             self.knob.text_entity.y = height/2
-
 
     @property
     def value(self):
@@ -111,8 +108,7 @@ class Slider(Entity):
         invoke(self._update_text, delay=1/60)
 
     def _update_text(self):
-            self.knob.text_entity.text = str(round(self.value, 2))
-
+        self.knob.text_entity.text = str(round(self.value, 2))
 
     def __setattr__(self, name, value):
         if name == 'eternal':
@@ -128,7 +124,6 @@ class Slider(Entity):
             return e
 
 
-
 class ThinSlider(Slider):
     def __init__(self, *args, **kwargs):
         kwargs['height'] = Text.size
@@ -139,8 +134,6 @@ class ThinSlider(Slider):
         self.bg.highlight_color = color.text_color
         self.knob.color = lerp(color.text_color, color.inverse(color.text_color), .1)
         self.label.color = color.text_color
-
-
 
 
 if __name__ == '__main__':

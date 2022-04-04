@@ -1,5 +1,6 @@
 from ursina import *
 
+
 class Sprite(Entity):
 
     ppu = 100

@@ -13,8 +13,6 @@ class Animator():
         self._state = None
         self.state = start_state
 
-
-
     @property
     def state(self):
         return self._state
@@ -37,8 +35,6 @@ class Animator():
                 anim.start()
 
         self._state = value
-
-
 
 
 if __name__ == '__main__':

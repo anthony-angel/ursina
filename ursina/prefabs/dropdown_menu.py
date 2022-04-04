@@ -19,7 +19,7 @@ class DropdownMenuButton(Button):
 
 class DropdownMenu(DropdownMenuButton):
 
-    def __init__(self, text='', buttons=list(), **kwargs):
+    def __init__(self, text='', buttons=(), **kwargs):
         super().__init__(text=text)
         self.position = window.top_left
         self.buttons = buttons
@@ -39,7 +39,6 @@ class DropdownMenu(DropdownMenuButton):
         for key, value in kwargs.items():
             setattr(self, key, value)
 
-
     def open(self):
         for i, b in enumerate(self.buttons):
             invoke(setattr, self.buttons[i], 'enabled', True, delay=(i*.02))
@@ -47,7 +46,6 @@ class DropdownMenu(DropdownMenuButton):
     def close(self):
         for i, b in enumerate(reversed(self.buttons)):
             b.enabled = False
-
 
     def on_mouse_enter(self):
         super().on_mouse_enter()
